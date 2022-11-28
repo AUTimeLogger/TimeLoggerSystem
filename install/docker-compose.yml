@@ -1,0 +1,10 @@
+version: '3.4'
+
+services:
+  management.db:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+
+  management.api:
+    image: elpatrondaniel/autimelogger.api:latest
+    depends_on:
+      - management.db

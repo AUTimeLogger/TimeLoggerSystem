@@ -1,0 +1,34 @@
+version: '3.4'
+
+services:
+  management.db:
+    environment:
+      - SA_PASSWORD=yourStrong(!)Password
+      - ACCEPT_EULA=Y
+    ports:
+      - "1433"
+    volumes:
+      - sqldata:/var/opt/mssql
+
+  management.api:
+    ports:
+      - "8090:80"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - Business__ConnectionString=Data Source=management.db;Initial Catalog=BusinessDb;Integrated Security=False;Persist Security Info=False; User ID=sa;Password=yourStrong(!)Password;TrustServerCertificate=true;
+      - Business__Database=SQL
+      - SecurityDbConfig__Database=Sql
+      - SecurityDbConfig__ConnectionString=Data Source=management.db;Initial Catalog=UserDB; User ID=sa;Password=yourStrong(!)Password;TrustServerCertificate=true;
+      - SecurityDbConfig__rootPassword=verySecretmuchSafe123.
+      - TokenGeneration__ValidIssuer=AUTimeManagement.Api
+      - TokenGeneration__SigningSecret=g6fywYjHlgbWQemJeJ0sAd54Ku+t4gO2Dpn7cQTbMo8=
+      - TokenGeneration__ValidAudience=AUTimeManagement.Api
+      - TokenGeneration__ExpireDuration=15
+
+volumes:
+  sqldata:
+    external: false
