@@ -8,3 +8,8 @@ services:
     image: elpatrondaniel/autimelogger.api:latest
     depends_on:
       - management.db
+  
+  client:
+    image: elpatrondaniel/autimelogger.client:latest
+    depends_on:
+      - management.api

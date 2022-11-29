@@ -29,6 +29,13 @@ services:
       - TokenGeneration__ValidAudience=AUTimeManagement.Api
       - TokenGeneration__ExpireDuration=15
 
+  client:
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=management.api/api
+
 volumes:
   sqldata:
     external: false
+  clientdata:
